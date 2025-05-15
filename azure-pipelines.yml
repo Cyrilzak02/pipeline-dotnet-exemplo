@@ -55,4 +55,4 @@ stages:
       mkdir deploy
       echo "Deploy fictício" > deploy\resultado.txt
       echo "Deploy .NET simulado com sucesso."
-  displayName: 'Simular Deploy .NET'
+    displayName: 'Simular Deploy .NET'
