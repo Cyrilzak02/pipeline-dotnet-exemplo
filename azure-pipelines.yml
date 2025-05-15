@@ -51,7 +51,8 @@ stages:
       displayName: "Baixar artifact do build"
 
     - script: |
-        mkdir deploy
-        xcopy /E /I .\bin\Debug\net6.0 deploy\
-        echo "Deploy .NET simulado com sucesso."
-      displayName: 'Simular Deploy .NET'
+      echo "Simulando deploy .NET..."
+      mkdir deploy
+      echo "Deploy fictício" > deploy\resultado.txt
+      echo "Deploy .NET simulado com sucesso."
+  displayName: 'Simular Deploy .NET'
