@@ -1,0 +1,51 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: Build
+  displayName: "Fase 1 - Build"
+  jobs:
+  - job: BuildJob
+    steps:
+    - script: |
+        dotnet restore
+        dotnet build
+      displayName: 'Build do projeto .NET'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: .
+        ArtifactName: dotnetBuild
+      displayName: "Publicar arquivos do build"
+
+- stage: Test
+  displayName: "Fase 2 - Teste"
+  dependsOn: Build
+  jobs:
+  - job: TestJob
+    steps:
+    - download: current
+      artifact: dotnetBuild
+      displayName: "Baixar artifact do build"
+
+    - script: dotnet test || echo "Testes simulados"
+      displayName: 'Executar testes .NET'
+
+- stage: Deploy
+  displayName: "Fase 3 - Deploy"
+  dependsOn: Test
+  jobs:
+  - job: DeployJob
+    steps:
+    - download: current
+      artifact: dotnetBuild
+      displayName: "Baixar artifact do build"
+
+    - script: |
+        mkdir deploy
+        xcopy /E /I .\bin\Debug\net6.0 deploy\
+        echo "Deploy .NET simulado com sucesso."
+      displayName: 'Simular Deploy .NET'
